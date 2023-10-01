@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>Productos</h2>
+
+    <form>
+        <label for="">Código:
+            <input type="text" id="codigo">
+        </label>
+        <label for="">Nombre:
+            <input type="text" id="nombre">
+        </label>
+        <label for="">Cantidad:
+            <input type="text" id="cantidad">
+        </label>
+        <label for="">Precio:
+            <input type="text" id="precio">
+        </label>
+        <br><br>
+        <button type="button" id="btnAdd">Agregar</button>
+        <br>
+        <button type="button" id="btnFind">Buscar por código</button>
+        <br>
+        <button type="button" id="btnDel">Eliminar</button>
+        <br>
+        <button type="button" id="btnIns">Insertar</button> <input type="number" id="pos">
+        <br>
+        <button type="button" id="btnList">Listar</button>
+        <br>
+        <button type="button" id="btnListinv">Listar inverso</button>
+    </form>
+
+    <div id="inventarioHTML"></div>
+
+    <div id="detalles"></div>
+
+</body>
+
+<script>
+
+class Producto {
+    constructor(codigo, nombre, cantidad, precio){
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.siguiente = null;
+    }
+
+    infoHTML(){
+        return  `<div>
+                <h3>${this.codigo} ${this.nombre}</h3>
+                <p>${this.cantidad} ${this.precio}</p>
+                </div>`;
+    }
+
+}
+
+class Inventario{
+    constructor(){
+        this.primero = null;
+    }
+
+
+    agregar(nuevo){
+      if (this.primero==null){
+        this.primero=nuevo;
+    }else{
+        let ultimo=this.primero;
+        while(ultimo.siguiente!=null)
+          ultimo=ultimo.siguiente;
+                ultimo.siguiente=nuevo;        
+      }
+    }
+
+    agregarInicio(nuevo){
+      nuevo.siguiente =this.primero;
+      this.primero = nuevo
+    }
+
+    extraerInicio(){
+        aux = this.primero;
+        
+    }
+
+    extraerUltimo(){
+
+    }
+
+
+    buscar(codigo)
+    {
+        let busqueda
+        for (let i = 0; i < this.datos.length; i++)
+        {
+            if (this.datos[i].codigo == codigo)
+            {
+                busqueda = this.datos[i].infoHTML();
+            }
+        }
+        return busqueda;
+    }
+
+
+    eliminar(codigo){
+        for (let i = 0; i < this.datos.length; i++)
+        {
+            if (this.datos[i].codigo == codigo)
+            {
+                for (let y = i; y < this.datos.length - 1; y++) {
+                    this.datos[y] = this.datos[y + 1]
+                }
+            }
+        }
+        this.datos.pop();
+    }
+
+
+
+    listar(){
+        let ult= this.primero
+        let res = "";
+            while (ult != null){
+                res += ult.infoHTML()
+                ult = ult.siguiente
+            }
+
+        return res
+    }
+
+
+    listarInverso(){
+    let infoHTML = "";
+    for(let i = this.datos.length - 1; i >= 0; i--)
+    {
+        infoHTML += this.datos[i].infoHTML();
+    }
+    return infoHTML;
+    }
+
+}
+
+const miInventario = new Inventario();
+const btnAdd = document.getElementById("btnAdd");
+const btnFind = document.getElementById("btnFind");
+const btnDel = document.getElementById("btnDel");
+const btnIns = document.getElementById("btnIns");
+const btnList = document.getElementById("btnList");
+const btnListinv = document.getElementById("btnListinv");
+const inventarioHTML = document.getElementById("inventarioHTML");
+
+
+
+btnAdd.addEventListener('click', () => {
+    let codigo = Number(document.getElementById("codigo").value);
+    let nombre = document.getElementById("nombre").value;
+    let cantidad = document.getElementById("cantidad").value;
+    let precio = document.getElementById("precio").value;
+    let nuevo = new Producto(codigo, nombre, cantidad, precio);
+    miInventario.agregar(nuevo);
+});
+
+
+btnFind.addEventListener("click", () => {
+    let codigo = document.getElementById("codigo").value;
+    inventarioHTML.innerHTML = miInventario.buscar(codigo);
+});
+
+
+btnDel.addEventListener("click", () => {
+    let codigo = document.getElementById("codigo").value;
+    miInventario.eliminar(codigo);
+});
+
+
+btnIns.addEventListener("click", () => {
+    let codigo = document.getElementById("codigo").value;
+    let nombre = document.getElementById("nombre").value;
+    let cantidad = document.getElementById("cantidad").value;
+    let precio = document.getElementById("precio").value;
+    let nuevo = new Producto(codigo, nombre, cantidad, precio);
+    let pos = document.getElementById("pos").value;
+    miInventario.insertar(pos, nuevo);
+});
+
+
+btnList.addEventListener("click", () => {
+    inventarioHTML.innerHTML = miInventario.listar();
+});
+
+
+btnListinv.addEventListener("click", () => {
+    inventarioHTML.innerHTML = miInventario.listarInverso();
+});
+
+
+</script>
+
+</html>
