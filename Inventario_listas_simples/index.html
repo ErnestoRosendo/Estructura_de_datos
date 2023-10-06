@@ -71,22 +71,22 @@ class Producto {
 class Inventario{
     constructor(){
         this.primero = null;
-        this.sum = 0;
+
     }
 
 
     agregar(nuevo){
+
       if (this.primero==null){
-        this.primero=nuevo;
-        this.sum ++
+        this.primero=nuevo
     }else{
         let ultimo=this.primero;
         while(ultimo.siguiente!=null){
           ultimo=ultimo.siguiente;
         }
-                ultimo.siguiente=nuevo;
-                this.sum ++        
+                ultimo.siguiente=nuevo;      
       }
+
     }
 
 
@@ -104,28 +104,6 @@ class Inventario{
         ult.siguiente = nuevo;
         }
     }
-
-    agregarInicio(nuevo){
-      nuevo.siguiente =this.primero;
-      this.primero = nuevo
-    }
-
-    extraerInicio(){
-        aux = this.primero;
-        this.primero = this.primero.siguiente
-        return aux.infoHTML()
-        
-    }
-
-    extraerUltimo(){
-        let ult = this.primero;
-        while (ult.siguiente.siguiente.siguiente != null) {
-            ult = ult.siguiente;
-        } 
-        aux = ult.siguiente.siguiente
-        ult.siguiente.siguiente = ult.siguiente.siguiente.siguiente
-        return aux.infoHTML()
-    }
 
 
     buscar(codigo)
@@ -201,9 +179,6 @@ const miInventario = new Inventario();
 const btnAdd = document.getElementById("btnAdd");
 const btnFind = document.getElementById("btnFind");
 const btnDel = document.getElementById("btnDel");
-const btnAddFirst = document.getElementById("btnAddFirst");
-const btnExtBegin = document.getElementById("btnExtBegin");
-const btnExtLast = document.getElementById("btnExtLast");
 const btnIns = document.getElementById("btnIns");
 const btnList = document.getElementById("btnList");
 const btnListinv = document.getElementById("btnListinv");
@@ -232,25 +207,6 @@ btnDel.addEventListener("click", () => {
     miInventario.eliminar(codigo);
 });
 
-
-btnAddFirst.addEventListener("click", () => {
-    let codigo = Number(document.getElementById("codigo").value);
-    let nombre = document.getElementById("nombre").value;
-    let cantidad = document.getElementById("cantidad").value;
-    let precio = document.getElementById("precio").value;
-    let nuevo = new Producto(codigo, nombre, cantidad, precio);
-    miInventario.agregarInicio(nuevo);
-});
-
-
-btnExtBegin.addEventListener("click", () => {
-    miInventario.extraerInicio();
-});
-
-
-btnExtLast.addEventListener("click", () => {
-    miInventario.extraerUltimo();
-});
 
 
 btnIns.addEventListener("click", () => {
