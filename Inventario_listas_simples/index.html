@@ -71,19 +71,39 @@ class Producto {
 class Inventario{
     constructor(){
         this.primero = null;
+        this.sum = 0;
     }
 
 
     agregar(nuevo){
       if (this.primero==null){
         this.primero=nuevo;
+        this.sum ++
     }else{
         let ultimo=this.primero;
-        while(ultimo.siguiente!=null)
+        while(ultimo.siguiente!=null){
           ultimo=ultimo.siguiente;
-                ultimo.siguiente=nuevo;        
+        }
+                ultimo.siguiente=nuevo;
+                this.sum ++        
       }
     }
+
+
+    insertar(pos, nuevo){
+        let ult = this.primero
+        if (pos == 1) {
+            nuevo.siguiente =this.primero;
+            this.primero = nuevo
+        } else {
+        for (let i = 2; i < pos; i++) {
+            ult = ult.siguiente
+            
+        }
+        nuevo.siguiente = ult.siguiente;
+        ult.siguiente = nuevo;
+        }
+    }
 
     agregarInicio(nuevo){
       nuevo.siguiente =this.primero;
@@ -110,52 +130,69 @@ class Inventario{
 
     buscar(codigo)
     {
-        let busqueda
-        for (let i = 0; i < this.datos.length; i++)
-        {
-            if (this.datos[i].codigo == codigo)
-            {
-                busqueda = this.datos[i].infoHTML();
-            }
+        let ult = this.primero;
+        while (codigo != ult.codigo) {
+            ult = ult.siguiente;
         }
-        return busqueda;
+        return ult.infoHTML()
     }
 
 
     eliminar(codigo){
-        for (let i = 0; i < this.datos.length; i++)
-        {
-            if (this.datos[i].codigo == codigo)
-            {
-                for (let y = i; y < this.datos.length - 1; y++) {
-                    this.datos[y] = this.datos[y + 1]
-                }
+        let ult = this.primero;
+        if (ult.codigo == codigo) {
+            this.primero = ult.siguiente
+        } else {
+            while (codigo != ult.siguiente.codigo) {
+            ult = ult.siguiente;
             }
+            ult.siguiente = ult.siguiente.siguiente
         }
-        this.datos.pop();
     }
 
 
 
     listar(){
-        let ult= this.primero
-        let res = "";
-            while (ult != null){
-                res += ult.infoHTML()
-                ult = ult.siguiente
-            }
 
-        return res
+
+        function recListar(nodo){
+            if (nodo.siguiente == null){
+                return nodo.infoHTML()
+            } else {
+                return nodo.infoHTML() + recListar(nodo.siguiente)
+            }
+        }
+
+
+        if (this.primero == null) {
+            return ""
+        } else {
+            return recListar(this.primero)
+        }
+
+
     }
 
 
     listarInverso(){
-    let infoHTML = "";
-    for(let i = this.datos.length - 1; i >= 0; i--)
-    {
-        infoHTML += this.datos[i].infoHTML();
-    }
-    return infoHTML;
+
+
+        function recListar(nodo){
+            if (nodo.siguiente == null){
+                return nodo.infoHTML()
+            } else {
+                return recListar(nodo.siguiente) + nodo.infoHTML()
+            }
+        }
+
+
+        if (this.primero == null) {
+            return ""
+        } else {
+            return recListar(this.primero)
+        }
+
+
     }
 
 }
