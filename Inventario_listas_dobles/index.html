@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>Productos</h2>
+
+    <form>
+        <label for="">Código:
+            <input type="text" id="codigo">
+        </label>
+        <label for="">Nombre:
+            <input type="text" id="nombre">
+        </label>
+        <label for="">Cantidad:
+            <input type="text" id="cantidad">
+        </label>
+        <label for="">Precio:
+            <input type="text" id="precio">
+        </label>
+        <br><br>
+        <button type="button" id="btnAdd">Agregar</button>
+        <br>
+        <button type="button" id="btnFind">Buscar por código</button>
+        <br>
+        <button type="button" id="btnDel">Eliminar</button>
+        <br>
+        <button type="button" id="btnList">Listar</button>
+        <br>
+        <button type="button" id="btnListinv">Listar inverso</button>
+    </form>
+
+    <div id="inventarioHTML"></div>
+
+    <div id="detalles"></div>
+
+</body>
+
+<script>
+
+class Producto {
+    constructor(codigo, nombre, cantidad, precio){
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.anterior = null;
+        this.siguiente = null;
+    }
+
+    infoHTML(){
+        return  `<div>
+                <h3>${this.codigo} ${this.nombre}</h3>
+                <p>${this.cantidad} ${this.precio}</p>
+                </div>`;
+    }
+
+}
+
+class Inventario{
+    constructor(){
+        this.primero = null;
+
+    }
+
+
+    agregar(nuevo)
+    {
+
+        if (this.primero==null)
+        {
+        this.primero=nuevo
+        } else
+        {
+        if (this.primero.codigo > nuevo.codigo) 
+        {
+            nuevo.siguiente = this.primero;
+            this.primero.anterior = nuevo;
+            this.primero = nuevo;
+        } else 
+        {
+            let ultimo=this.primero;
+            while(ultimo.siguiente != null)
+            {
+                if (ultimo.codigo > nuevo.codigo) 
+                {
+                    nuevo.siguiente = ultimo;
+                    nuevo.anterior = ultimo.anterior;
+                    ultimo.anterior.siguiente = nuevo;
+                    ultimo.anterior = nuevo;
+                }
+            ultimo=ultimo.siguiente;
+            }
+            if (ultimo.codigo < nuevo.codigo) 
+            {
+                nuevo.anterior = ultimo;
+                ultimo.siguiente = nuevo;
+            } else {
+                nuevo.siguiente = ultimo;
+                nuevo.anterior = ultimo.anterior;
+                ultimo.anterior.siguiente = nuevo;
+                ultimo.anterior = nuevo;
+            }
+        }
+         
+        }
+
+    }
+
+
+
+    buscar(codigo)
+    {
+        let ult = this.primero;
+        while (codigo != ult.codigo) {
+            ult = ult.siguiente;
+        }
+        return ult.infoHTML()
+    }
+
+
+    eliminar(codigo){
+        let ult = this.primero;
+        if (ult.codigo == codigo) {
+            this.primero = ult.siguiente
+        } else {
+            while (codigo != ult.siguiente.codigo) {
+            ult = ult.siguiente;
+            }
+            ult.siguiente = ult.siguiente.siguiente
+        }
+    }
+
+
+
+    listar(){
+
+
+        function recListar(nodo){
+            if (nodo.siguiente == null){
+                return nodo.infoHTML()
+            } else {
+                return nodo.infoHTML() + recListar(nodo.siguiente)
+            }
+        }
+
+
+        if (this.primero == null) {
+            return ""
+        } else {
+            return recListar(this.primero)
+        }
+
+
+    }
+
+
+    listarInverso(){
+
+
+        function recListar(nodo){
+            if (nodo.siguiente == null){
+                return nodo.infoHTML()
+            } else {
+                return recListar(nodo.siguiente) + nodo.infoHTML()
+            }
+        }
+
+
+        if (this.primero == null) {
+            return ""
+        } else {
+            return recListar(this.primero)
+        }
+
+
+    }
+
+}
+
+const miInventario = new Inventario();
+const btnAdd = document.getElementById("btnAdd");
+const btnFind = document.getElementById("btnFind");
+const btnDel = document.getElementById("btnDel");
+const btnList = document.getElementById("btnList");
+const btnListinv = document.getElementById("btnListinv");
+const inventarioHTML = document.getElementById("inventarioHTML");
+
+
+
+btnAdd.addEventListener('click', () => {
+    let codigo = Number(document.getElementById("codigo").value);
+    let nombre = document.getElementById("nombre").value;
+    let cantidad = document.getElementById("cantidad").value;
+    let precio = document.getElementById("precio").value;
+    let nuevo = new Producto(codigo, nombre, cantidad, precio);
+    miInventario.agregar(nuevo);
+});
+
+
+btnFind.addEventListener("click", () => {
+    let codigo = document.getElementById("codigo").value;
+    inventarioHTML.innerHTML = miInventario.buscar(codigo);
+});
+
+
+btnDel.addEventListener("click", () => {
+    let codigo = document.getElementById("codigo").value;
+    miInventario.eliminar(codigo);
+});
+
+
+
+btnList.addEventListener("click", () => {
+    inventarioHTML.innerHTML = miInventario.listar();
+});
+
+
+btnListinv.addEventListener("click", () => {
+    inventarioHTML.innerHTML = miInventario.listarInverso();
+});
+
+
+</script>
+
+</html>
