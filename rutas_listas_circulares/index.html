@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+class Base {
+    constructor(nombre, minutos){
+        this.minutos = minutos;
+        this.nombre = nombre;
+        this.siguiente = null;
+        this.anterior = null;
+    }
+
+    infoHTML(){
+        return  `<div>
+                <h3>${this.nombre} ${this.minutos}</h3>
+                </div>`;
+    }
+}
+
+
+class RutaDeTransporte {
+    constructor(){
+        this.primero = null
+    }
+
+    agregar(nuevo){
+      if (this.primero == null) {
+        this.primero = nuevo;
+        this.primero.anterior = this.primero;
+        this.primero.siguiente = this.primero;
+      }
+      else if (this.primero.siguiente = this.primero){
+        nuevo.anterior = this.primero;
+        nuevo.siguiente = this.primero;
+        this.primero.anterior = nuevo;
+        this.primero.siguiente = nuevo
+      }
+      else if (this.primero.siguiente != this.primero) {
+        let aux = this.primero;
+        while (aux.siguiente != this.primero) {
+            aux = aux.siguiente;
+        }
+        nuevo.siguiente = this.primero;
+        nuevo.anterior = aux;
+        aux.siguiente = nuevo;
+        this.primero.anterior = nuevo;
+      }
+
+    }
+    
+    buscar(dato) {
+      let aux = this.primero;
+      while (aux !== null) {
+        if (aux.dato === dato) {
+          return aux;
+        }
+        aux = aux.siguiente;
+      }
+      return null; 
+    }
+
+
+
+    eliminar(dato) {
+      let aux = this.primero;
+      while (aux !== null) {
+        if (aux.dato === dato) {
+          return aux;
+        }
+        aux = aux.siguiente;
+      }
+      return null; 
+    }
+
+
+    listar(){
+      if (this.primero==null)
+        return "";
+      else
+        return this._recListar(this.primero);
+    }
+
+
+    listarInverso(){
+    if (this.primero==null)
+        return "";
+      else
+        return this._recListarInverso(this.primero);
+  }
+
+
+
+    agregarInicio(dato){
+        dato.siguiente = this.primero
+        this.primero.anterior = dato
+        this.primero = dato;
+    }
+
+    
+}
+
+let miRuta = new RutaDeTransporte();
+let nuevo = new Base("central", 30);
+miRuta.agregar(nuevo);
+nuevo = new Base("central2", 40);
+miRuta.agregar(nuevo);
+
+</script>
+</body>
+</html>
