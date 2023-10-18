@@ -70,46 +70,34 @@ class Inventario{
 
     agregar(nuevo)
     {
-
-        if (this.primero==null)
+        if (this.primero == null)
         {
-        this.primero=nuevo
-        } else
-        {
-        if (this.primero.codigo > nuevo.codigo) 
-        {
-            nuevo.siguiente = this.primero;
-            this.primero.anterior = nuevo;
             this.primero = nuevo;
-        } else 
+        }
+        else if (nuevo.codigo < this.primero.codigo)
         {
-            let ultimo=this.primero;
-            while(ultimo.siguiente != null)
-            {
-                if (ultimo.codigo > nuevo.codigo) 
-                {
-                    nuevo.siguiente = ultimo;
-                    nuevo.anterior = ultimo.anterior;
-                    ultimo.anterior.siguiente = nuevo;
-                    ultimo.anterior = nuevo;
-                }
-            ultimo=ultimo.siguiente;
-            }
-            if (ultimo.codigo < nuevo.codigo) 
-            {
-                nuevo.anterior = ultimo;
-                ultimo.siguiente = nuevo;
-            } else {
-                nuevo.siguiente = ultimo;
-                nuevo.anterior = ultimo.anterior;
-                ultimo.anterior.siguiente = nuevo;
-                ultimo.anterior = nuevo;
-            }
+            this.primero.anterior = nuevo;
+            nuevo.siguiente = this.primero;
+            this.primero = nuevo;
         }
-         
+        else if (this.primero.siguiente == null)
+        {
+            this.primero.siguiente = nuevo;
+            nuevo.anterior = this.primero;
         }
-
-    }
+        else
+        {
+            let posicion = this.primero;
+            while (posicion.siguiente != null && nuevo.codigo > posicion.siguiente.codigo)
+            {
+                posicion = posicion.siguiente;
+            }
+            nuevo.anterior = posicion;
+            nuevo.siguiente = posicion.siguiente;
+            posicion.siguiente = nuevo;
+        }
+        return nuevo;
+    }
 
 
 
@@ -133,6 +121,7 @@ class Inventario{
             }
             ult.siguiente = ult.siguiente.siguiente
         }
+        return 
     }
 
 
