@@ -33,14 +33,7 @@ class RutaDeTransporte {
         this.primero = nuevo;
         this.primero.anterior = this.primero;
         this.primero.siguiente = this.primero;
-      }
-      else if (this.primero.siguiente = this.primero){
-        nuevo.anterior = this.primero;
-        nuevo.siguiente = this.primero;
-        this.primero.anterior = nuevo;
-        this.primero.siguiente = nuevo
-      }
-      else if (this.primero.siguiente != this.primero) {
+      }else {
         let aux = this.primero;
         while (aux.siguiente != this.primero) {
             aux = aux.siguiente;
@@ -78,6 +71,8 @@ class RutaDeTransporte {
     }
 
 
+
+
     listar(){
       if (this.primero==null)
         return "";
@@ -103,11 +98,17 @@ class RutaDeTransporte {
 
 
     _recListar(nodo){
-      
       if (nodo.siguiente==this.primero)
         return nodo.nombre;
       else
-      return nodo.nombre + ' ' + this._recListar(nodo.siguiente);
+        return nodo.nombre + ' ' + this._recListar(nodo.siguiente);
+    }
+    
+    _recListarInverso(nodo){
+      if (nodo.siguiente==this.primero)
+        return nodo.nombre;
+      else
+        return this._recListarInverso(nodo.siguiente) + ' ' +  nodo.nombre;
     }
 
     
@@ -118,7 +119,15 @@ let nuevo = new Base("central", 30);
 miRuta.agregar(nuevo);
 nuevo = new Base("central2", 40);
 miRuta.agregar(nuevo);
-// console.log(miRuta.listar());
+nuevo = new Base("central3", 40);
+miRuta.agregar(nuevo);
+nuevo = new Base("central4", 40);
+miRuta.agregar(nuevo);
+nuevo = new Base("central5", 40);
+miRuta.agregar(nuevo);
+
+console.log(miRuta.listar());
+console.log(miRuta.listarInverso());
 
 </script>
 </body>
