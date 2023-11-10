@@ -41,8 +41,25 @@ class ArbolBinario{
     }
 
     buscar(nodo){
-
+        if (this.raiz === null){
+            return null
+        } else {
+            this._recBuscar(nodo, this.raiz)
+        }
     }
+
+
+    _recBuscar (nodo, raizx){
+        if (nodo.number === raizx.number){
+            return raizx
+        }
+        else if (nodo.number < raizx.number){
+            this._recBuscar(nodo, raizx.hizq)
+        } else {
+            this._recBuscar(nodo, raizx.hder)
+        }
+    }
+
 
     _recInorder (nodox){
         
