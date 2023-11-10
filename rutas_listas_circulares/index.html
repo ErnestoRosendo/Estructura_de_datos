@@ -46,30 +46,50 @@ class RutaDeTransporte {
 
     }
     
-    buscar(dato) {
+    buscar(nombre) {
       let aux = this.primero;
-      while (aux !== null) {
-        if (aux.dato === dato) {
+      while (aux.siguiente !== this.primero) {
+        if (aux.nombre === nombre) {
           return aux;
         }
         aux = aux.siguiente;
+      }
+      if (aux.nombre === nombre){
+        return aux;
       }
       return null; 
     }
 
 
 
-    eliminar(dato) {
-      let aux = this.primero;
-      while (aux !== null) {
-        if (aux.dato === dato) {
-          return aux;
-        }
-        aux = aux.siguiente;
-      }
-      return null; 
+    eliminar(nombre) {
+      let aux = this.buscar(nombre);
+      if (this.primero === null) {
+      return;
     }
 
+    if (this.primero === this.primero.siguiente) {
+      if (this.primero.nombre == nombre) {
+        this.primero = null;
+      }
+      return;
+    }
+    if (aux == null) {
+      return;
+    }
+
+    if (aux == this.primero) {
+      this.primero = this.primero.siguiente;
+    }
+
+    aux.anterior.siguiente = aux.siguiente;
+    aux.siguiente.anterior = aux.anterior;
+
+    if (aux.siguiente === this.primero) {
+      this.primero.anterior = aux.anterior; 
+    }
+  }
+  
 
 
 
@@ -90,10 +110,18 @@ class RutaDeTransporte {
 
 
 
-    agregarInicio(dato){
-        dato.siguiente = this.primero
-        this.primero.anterior = dato
-        this.primero = dato;
+    agregarInicio(nuevo){
+        if (this.primero != null) {
+          nuevo.anterior = this.primero.anterior;
+          nuevo.siguiente = this.primero;
+          this.primero.anterior.siguiente = nuevo;
+          this.primero.anterior = nuevo
+          this.primero = nuevo
+        } else {
+          this.primero = nuevo;
+          this.primero.anterior = this.primero;
+          this.primero.siguiente = this.primero;
+        }
     }
 
 
@@ -111,7 +139,35 @@ class RutaDeTransporte {
         return this._recListarInverso(nodo.siguiente) + ' ' +  nodo.nombre;
     }
 
-    
+
+    crearRuta(baseInicio, horaInicio, horaFin) {
+    if (baseInicio == null || horaInicio < 0 || horaFin <= horaInicio) {
+      return "Parámetros inválidos";
+    }
+
+    let rutaActual = baseInicio;
+    let horaActual = horaInicio;
+    let minutos = 0;
+    let rutaRecorrida = "";
+
+    while (horaActual < horaFin || (horaActual == horaFin && minutos == 0)) {
+      let horaStr = horaActual < 10 ? `0${horaActual}` : horaActual;
+      let minutosStr = minutos < 10 ? `0${minutos}` : minutos;
+
+      rutaRecorrida += `Hora: ${horaStr}:${minutosStr} - Base: ${rutaActual.nombre}\n `;
+
+      minutos += rutaActual.siguiente.minutos;
+      while (minutos >= 60) {
+        horaActual++;
+        minutos -= 60;
+      }
+      rutaActual = rutaActual.siguiente;
+      if (rutaActual === this.primero) {
+        rutaActual = this.primero;
+      }
+    }
+
+  } 
 }
 
 let miRuta = new RutaDeTransporte();
@@ -125,9 +181,15 @@ nuevo = new Base("central4", 40);
 miRuta.agregar(nuevo);
 nuevo = new Base("central5", 40);
 miRuta.agregar(nuevo);
+miRuta.eliminar("central1");
+nuevo = new Base("central0", 40);
+miRuta.agregarInicio(nuevo);
+
 
 console.log(miRuta.listar());
 console.log(miRuta.listarInverso());
+console.log(miRuta.buscar("central9"));
+
 
 </script>
 </body>
