@@ -40,28 +40,79 @@ class ArbolBinario{
         }
     }
 
-    buscar(nodo){
+    buscar(number){
         if (this.raiz === null){
             return null
         } else {
-            this._recBuscar(nodo, this.raiz)
+            return this._recBuscar(number, this.raiz)
         }
     }
 
 
-    _recBuscar (nodo, raizx){
-        if (nodo.number === raizx.number){
-            return raizx
+    // _recBuscar (number, raizx){
+    //     if (number == raizx.number){
+    //         return raizx
+    //     }
+    //     else if (number < raizx.number){
+    //         if (raizx.hizq != null) {
+    //             return this._recBuscar(number, raizx.hizq)
+    //         }
+    //     } else {
+    //         if (raizx.hder != null) {
+    //             return this._recBuscar(number, raizx.hder)  
+    //         }
+    //     }
+    // }
+
+    _recBuscar(number, raizx) {
+        if (raizx === null) {
+            return null;
         }
-        else if (nodo.number < raizx.number){
-            this._recBuscar(nodo, raizx.hizq)
+    
+        if (number === raizx.numero) {
+            return raizx;
+        } else if (number < raizx.numero) {
+            return this._recBuscar(number, raizx.hizq);
         } else {
-            this._recBuscar(nodo, raizx.hder)
+            return this._recBuscar(number, raizx.hder);
+        }
+    }
+
+
+
+    preOrder(){
+        if (this.raiz === null){
+            return null
+        } else {
+            return this._recPre(this.raiz)
         }
     }
 
 
-    _recInorder (nodox){
-        
+    _recPre (raizx) {
+        console.log(raizx.numero)
+        if (raizx.hizq != null) {
+            this._recPre(raizx.hizq)
+        }
+        if (raizx.hder != null) {
+            this._recPre(raizx.hder)
+        }
     }
 }
+
+
+let miArbol = new ArbolBinario();
+let nuevo = new Nodo(22)
+miArbol.agregar(nuevo);
+nuevo = new Nodo(4)
+miArbol.agregar(nuevo);
+nuevo = new Nodo(7)
+miArbol.agregar(nuevo);
+nuevo = new Nodo(45)
+miArbol.agregar(nuevo);
+nuevo = new Nodo(33)
+miArbol.agregar(nuevo);
+nuevo = new Nodo(15)
+miArbol.agregar(nuevo);
+console.log(miArbol.buscar(33));
+miArbol.preOrder();
