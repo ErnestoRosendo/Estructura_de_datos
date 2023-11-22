@@ -75,7 +75,7 @@ class ArbolBinario{
             return this._recBuscar(number, raizx.hizq);
         } else {
             return this._recBuscar(number, raizx.hder);
-        }
+        }
     }
 
 
@@ -91,7 +91,7 @@ class ArbolBinario{
 
     _recPre (raizx) {
         console.log(raizx.numero)
-        if (raizx.hizq != null) {
+        if (raizx.hizq != null) { 
             this._recPre(raizx.hizq)
         }
         if (raizx.hder != null) {
