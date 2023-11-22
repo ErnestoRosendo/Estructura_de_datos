@@ -89,16 +89,43 @@ class ArbolBinario{
     }
 
 
-    _recPre (raizx) {
+    _recPre(raizx) {
+
         console.log(raizx.numero)
+
         if (raizx.hizq != null) {
             this._recPre(raizx.hizq)
         }
+
         if (raizx.hder != null) {
             this._recPre(raizx.hder)
         }
     }
+
+    postOrder(){
+        if (this.raiz === null){
+            return null
+        } else {
+            return this._recPost(this.raiz)
+        }
+    }
+
+
+    _recPost(raizx) {
+
+        if (raizx.hizq != null) {
+            this._recPre(raizx.hizq)
+        }
+
+        if (raizx.hder != null) {
+            this._recPre(raizx.hder)
+        }
+
+        console.log(raizx.numero)
+        
+    }
 }
+
 
 
 let miArbol = new ArbolBinario();
