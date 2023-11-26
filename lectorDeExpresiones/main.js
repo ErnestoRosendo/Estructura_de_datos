@@ -36,6 +36,14 @@ class Lista {
     }
 
 
+    borrar(nodo){
+        if (nodo == this.primero) {
+            this.primero = nodo.siguiente;
+            nodo = null
+        } 
+    }
+
+
 
     recorrer(){
         if (this.primero = null) {
@@ -53,20 +61,16 @@ class Lista {
             aux.hizq = aux.anterior;
             aux.hder = aux.siguiente;
             if (aux.anterior == this.primero) {
-                this.primero = aux;
-                aux.anterior.siguiente = null;
+                this.primero = aux;;
                 aux.anterior = null;
             } else {
                 aux.anterior.anterior.siguiente = aux;
-                aux.anterior.siguiente = null;
                 aux.anterior = aux.anterior.anterior;
             }
             if (aux.siguiente.siguiente != null) {
                 aux.siguiente = aux.siguiente.siguiente;
-                aux.siguiente.anterior = null;
                 aux.siguiente.siguiente.anterior = aux;
             } else {
-                aux.siguiente.anterior = null;
                 aux.siguiente = null;
             }
             if (aux.siguiente !== null) {
@@ -121,3 +125,4 @@ nuevo = new Nodo("/");
 lista.agregar(nuevo);
 nuevo = new Nodo(2);
 lista.agregar(nuevo);
+lista.recorrer();
